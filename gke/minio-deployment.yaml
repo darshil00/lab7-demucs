@@ -23,6 +23,9 @@ spec:
       labels:
         app: minio
     spec:
+      securityContext:
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: minio
           image: cgr.dev/chainguard/minio:latest
