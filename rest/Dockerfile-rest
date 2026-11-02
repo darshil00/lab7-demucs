@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    flask \
+    redis \
+    minio \
+    requests \
+    jsonpickle
+
+COPY rest-server.py /app/rest-server.py
+
+EXPOSE 5000
+
+CMD ["python", "rest-server.py"]

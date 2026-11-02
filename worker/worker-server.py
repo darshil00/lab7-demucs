@@ -29,7 +29,10 @@ TRACKS = ["bass", "drums", "vocals", "other"]
 redis_client = redis.Redis(
     host=REDIS_HOST,
     port=REDIS_PORT,
-    decode_responses=True
+    decode_responses=True,
+    socket_connect_timeout=10,
+    socket_timeout=None,
+    health_check_interval=30
 )
 
 minio_client = Minio(

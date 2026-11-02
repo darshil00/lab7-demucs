@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demucs-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demucs-worker
+  template:
+    metadata:
+      labels:
+        app: demucs-worker
+    spec:
+      containers:
+        - name: demucs-worker
+          image: demucs-worker:v2
+          imagePullPolicy: Never
+          env:
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: MINIO_HOST
+              value: "minio:9000"
+            - name: MINIO_ACCESS_KEY
+              value: "rootuser"
+            - name: MINIO_SECRET_KEY
+              value: "rootpass123"
+          resources:
+            requests:
+              memory: "2Gi"
+            limits:
+              memory: "6Gi"

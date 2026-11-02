@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-server
+  template:
+    metadata:
+      labels:
+        app: rest-server
+    spec:
+      containers:
+        - name: rest-server
+          image: demucs-rest:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: MINIO_HOST
+              value: "minio:9000"
+            - name: MINIO_ACCESS_KEY
+              value: "rootuser"
+            - name: MINIO_SECRET_KEY
+              value: "rootpass123"
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rest-service
+spec:
+  selector:
+    app: rest-server
+  ports:
+    - port: 5000
+      targetPort: 5000
+  type: ClusterIP
